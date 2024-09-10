@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Playlist;
+use App\Models\Song;
 
 class SongController extends Controller
 {
     
     public function index()
     {
-        $playlists = Playlist::all();
-        return view('playlist.index', compact('playlists'));
+        $songs = Song::all();
+        return view('song.index', compact('songs'));
     }
 
     /**
@@ -18,7 +20,7 @@ class SongController extends Controller
      */
     public function create()
     {
-       return view('playlist.create');
+       return view('song.create');
     }
 
     /**
@@ -38,15 +40,15 @@ class SongController extends Controller
             'genre' => $request->input('genre')
         ]);
 
-        return redirect('/playlist'); //--------------Šo vajadzēs samainīt!!!!!!
+        return redirect('/song'); //--------------Šo vajadzēs samainīt!!!!!!
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Song $song)
     {
-       return view('playlist.show');
+       return view('song.show', ['song' => $song]);
     }
 
     /**
@@ -54,7 +56,10 @@ class SongController extends Controller
      */
     public function edit($id)
     {
-        
+        $song = Song::findOrFail($id);
+    
+    // Pass the playlist to the view
+    return view('song.edit', ['song' => $song]);
     }
 
     /**
@@ -78,7 +83,7 @@ class SongController extends Controller
         ]);
     }
 
-    return redirect('/playlist'); //--------------Šo vajadzēs samainīt!!!!!!
+    return redirect('/song'); //--------------Šo vajadzēs samainīt!!!!!!
     }
 
     /**
@@ -90,6 +95,6 @@ class SongController extends Controller
 
         $song->delete();
 
-        return redirect('/playlist'); //--------------Šo vajadzēs samainīt!!!!!!
+        return redirect('/song'); //--------------Šo vajadzēs samainīt!!!!!!
     }
 }
